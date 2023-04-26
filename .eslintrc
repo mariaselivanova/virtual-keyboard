@@ -17,7 +17,7 @@
         "allow": [
           "_triggerEvent",
           "_toggleCapsLock",
-          "_makeKey"
+          "_makeKeys"
         ]
       }
     ]
