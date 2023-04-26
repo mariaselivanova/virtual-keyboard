@@ -36,6 +36,7 @@ h1 {
 }
 
 .keyboard__key {
+  position: relative;
   height: 45px;
   width: 45px;
   margin: 3px;
@@ -61,10 +62,6 @@ h1 {
   background: rgba(74, 197, 33, 0.773);
 }
 
-.keyboard__key--active {
-  background: rgba(74, 197, 33, 0.773);
-}
-
 .keyboard__key_medium {
   width: 70px;
 }
@@ -75,4 +72,19 @@ h1 {
 
 .keyboard__key_super-wide {
   width: 351px;
+}
+
+.keyboard__key--activatable::after {
+  content: '';
+  top: 6px;
+  left: 6px;
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+  background: #08ff00;
 }

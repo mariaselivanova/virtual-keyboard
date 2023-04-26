@@ -22,11 +22,16 @@ export default class KeyElements {
     });
   }
 
-  updateInput() {
+  toggleLanguage() {
+    this.keyLayout = this.keyLayout === keyLayoutEn ? keyLayoutRu : keyLayoutEn;
+  }
+
+  _updateInput() {
     this.keyboardInput.value = this.value;
   }
 
   makeKeys() {
+    console.log(this.capsLock)
     const fragment = document.createDocumentFragment();
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
@@ -43,12 +48,12 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '\n';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)}\n${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -62,12 +67,12 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '\t';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)}\t${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -81,7 +86,7 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) return;
             this.value = this.value.slice(0, cursorPos) + this.value.slice(cursorPos + 1);
-            this.updateInput();
+            this._updateInput();
             this.keyboardInput.focus();
             this.keyboardInput.setSelectionRange(cursorPos, cursorPos);
           });
@@ -93,12 +98,12 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += ' ';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)} ${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -112,12 +117,12 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value = this.value.slice(0, this.value.length - 1);
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
               this.keyboardInput.focus();
             } else {
               this.value = this.value.substring(0, cursorPos - 1) + this.value.substring(cursorPos);
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
               this.keyboardInput.focus();
             }
@@ -125,11 +130,15 @@ export default class KeyElements {
           break;
 
         case 'caps':
-          keyElement.classList.add('keyboard__key_wide');
+          keyElement.classList.add('keyboard__key_wide', 'keyboard__key--activatable');
           keyElement.textContent = 'CapsLock';
+          if (this.capsLock) {
+            keyElement.classList.add('keyboard__key--active');
+          }
 
           keyElement.addEventListener('click', () => {
             this._toggleCapsLock();
+            keyElement.classList.toggle('keyboard__key--active');
           });
           break;
 
@@ -166,13 +175,13 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '▲';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)
               }▲${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -184,13 +193,13 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '▼';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)
               }▼${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -202,13 +211,13 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '◄';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)
               }◄${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -220,13 +229,13 @@ export default class KeyElements {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += '►';
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               this.value = `${this.value.substring(0, cursorPos)
               }►${this.value.substring(cursorPos)}`;
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }
@@ -234,12 +243,12 @@ export default class KeyElements {
           break;
 
         default:
-          keyElement.textContent = key;
+          keyElement.textContent = this.capsLock ? key.toUpperCase() : key.toLowerCase();
           keyElement.addEventListener('click', () => {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
               this.value += this.capsLock ? key.toUpperCase() : key.toLowerCase();
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
@@ -250,7 +259,7 @@ export default class KeyElements {
                 this.value = this.value.substring(0, cursorPos)
                   + key.toLowerCase() + this.value.substring(cursorPos);
               }
-              this.updateInput();
+              this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             }

@@ -11,11 +11,12 @@ export default class Keyboard {
     this.container.classList.add('keyboard');
     this.container.append(this.keys);
     document.body.append(this.container);
+  }
 
-    // подпись
-    const text = document.createElement('p');
-    text.classList.add('text');
-    text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: левыe ctrl + alt';
-    document.body.append(text);
+  updateLanguage(newKeys) {
+    const container = document.querySelector('.keyboard');
+    container.remove();
+    this.keys = newKeys;
+    this.init();
   }
 }
