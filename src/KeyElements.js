@@ -1,8 +1,9 @@
-import { keyLayoutEn, keyLayoutRu } from './utils/keyLayout';
+import { keys } from './utils/keyLayout';
 
 export default class KeyElements {
   constructor(keyboardInput) {
-    this.keyLayout = keyLayoutEn;
+    this.keyLayout = [];
+    this.lang = 'en';
     this.keyboardInput = keyboardInput;
     this.value = '';
     this.capsLock = false;
@@ -23,7 +24,8 @@ export default class KeyElements {
   }
 
   toggleLanguage() {
-    this.keyLayout = this.keyLayout === keyLayoutEn ? keyLayoutRu : keyLayoutEn;
+    this.lang = this.lang === 'en' ? 'ru' : 'en';
+    this.keyLayout = this.lang === 'en' ? keys.map((item) => item.keyRu) : keys.map((item) => item.keyEn);
   }
 
   _updateInput() {
@@ -31,8 +33,8 @@ export default class KeyElements {
   }
 
   makeKeys() {
-    console.log(this.capsLock)
     const fragment = document.createDocumentFragment();
+    this.keyLayout = this.lang === 'en' ? keys.map((item) => item.keyEn) : keys.map((item) => item.keyRu);
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
       const insertLineBreak = ['backspace', 'del', 'enter', 'shiftRight', 'ctrlRight'].indexOf(key) !== -1;

@@ -10,7 +10,7 @@ document.body.append(header);
 // подпись
 const text = document.createElement('p');
 text.classList.add('text');
-text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: левыe ctrl + alt';
+text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: ctrl + alt';
 document.body.append(text);
 
 // инпут
@@ -25,9 +25,10 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 // смена языка
-document.addEventListener('keydown', (event) => {
-  if (event.ctrlKey && event.altKey) {
+document.addEventListener('keydown', (evt) => {
+  if (evt.altKey && evt.ctrlKey) {
     keyElements.toggleLanguage();
     keyboard.updateLanguage(keyElements.makeKeys());
   }
 });
+

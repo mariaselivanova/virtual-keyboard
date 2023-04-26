@@ -62,6 +62,10 @@ h1 {
   background: rgba(74, 197, 33, 0.773);
 }
 
+.keyboard__key_act {
+  background: rgba(74, 197, 33, 0.773);
+}
+
 .keyboard__key_medium {
   width: 70px;
 }
