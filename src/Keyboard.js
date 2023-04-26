@@ -36,18 +36,69 @@ export default class Keyboard {
       switch (key) {
         case 'enter':
           keyElement.classList.add('keyboard__key_wide');
-          keyElement.innerHTML = 'Enter';
+          keyElement.textContent = 'Enter';
           keyElement.addEventListener('click', () => {
-            this.value += '\n';
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) {
+              this.value += '\n';
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            } else {
+              this.value = this.value.substring(0, cursorPos) + '\n' + this.value.substring(cursorPos);
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            }
+          });
+          break;
+
+        case 'tab':
+          keyElement.classList.add('keyboard__key_wide');
+          keyElement.textContent = 'Tab';
+          keyElement.addEventListener('click', () => {
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) {
+              this.value += '\t';
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            } else {
+              this.value = this.value.substring(0, cursorPos) + '\t' + this.value.substring(cursorPos);
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            }
+          });
+          break;
+
+        case 'del':
+          keyElement.textContent = 'Del';
+          keyElement.addEventListener('click', () => {
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) return;
+            this.value = this.value.slice(0, cursorPos) + this.value.slice(cursorPos + 1);
             this.updateInput();
+            this.keyboardInput.focus();
+            this.keyboardInput.setSelectionRange(cursorPos, cursorPos);
           });
           break;
 
         case 'space':
           keyElement.classList.add('keyboard__key_super-wide');
           keyElement.addEventListener('click', () => {
-            this.value += ' ';
-            this.updateInput();
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) {
+              this.value += ' ';
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            } else {
+              this.value = this.value.substring(0, cursorPos) + ' ' + this.value.substring(cursorPos);
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            }
           });
           break;
 
@@ -55,8 +106,18 @@ export default class Keyboard {
           keyElement.classList.add('keyboard__key_wide');
           keyElement.textContent = 'Backspace';
           keyElement.addEventListener('click', () => {
-            this.value = this.value.slice(0, this.value.length - 1);
-            this.updateInput();
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) {
+              this.value = this.value.slice(0, this.value.length - 1);
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
+              this.keyboardInput.focus();
+            } else {
+              this.value = this.value.substring(0, cursorPos - 1) + this.value.substring(cursorPos);
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
+              this.keyboardInput.focus();
+            }
           });
           break;
 
@@ -72,8 +133,22 @@ export default class Keyboard {
         default:
           keyElement.textContent = key;
           keyElement.addEventListener('click', () => {
-            this.value += this.capsLock ? key.toUpperCase() : key.toLowerCase();
-            this.updateInput();
+            const cursorPos = this.keyboardInput.selectionStart;
+            if (cursorPos === this.value.length) {
+              this.value += this.capsLock ? key.toUpperCase() : key.toLowerCase();
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            } else {
+              if (this.capsLock) {
+                this.value = this.value.substring(0, cursorPos) + key.toUpperCase() + this.value.substring(cursorPos);
+              } else {
+                this.value = this.value.substring(0, cursorPos) + key.toLowerCase() + this.value.substring(cursorPos);
+              }
+              this.updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
+              this.keyboardInput.focus();
+            }
           });
           break;
       }
