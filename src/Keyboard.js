@@ -14,10 +14,11 @@ export default class Keyboard {
 
     const keyArr = document.querySelectorAll('.keyboard__key');
     // подсветка клавиш при нажатии на обычную клавиатуру.
-/*     document.addEventListener('keydown', (event) => {
+    document.addEventListener('keydown', (event) => {
+      const { code } = event;
       const virtualKey = Array.from(keyArr).find((k) => {
-        const virtualKeyText = k.textContent.toLowerCase();
-        return event.code === virtualKeyText;
+        const atribute = k.getAttribute('data-code');
+        return code === atribute;
       });
 
       if (virtualKey) {
@@ -26,16 +27,16 @@ export default class Keyboard {
     });
 
     document.addEventListener('keyup', (event) => {
+      const { code } = event;
       const virtualKey = Array.from(keyArr).find((k) => {
-        const virtualKeyText = k.textContent.toLowerCase();
-        const code = KeyboardEvent.code(virtualKeyText);
-        return event.code === code;
+        const atribute = k.getAttribute('data-code');
+        return code === atribute;
       });
 
       if (virtualKey) {
         virtualKey.classList.remove('keyboard__key_act');
       }
-    }); */
+    });
   }
 
   updateLanguage(newKeys) {

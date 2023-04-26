@@ -1,4 +1,4 @@
-import { keys } from './utils/keyLayout';
+import { keysEn, keysRu } from './utils/keyLayout';
 
 export default class KeyElements {
   constructor(keyboardInput) {
@@ -25,7 +25,7 @@ export default class KeyElements {
 
   toggleLanguage() {
     this.lang = this.lang === 'en' ? 'ru' : 'en';
-    this.keyLayout = this.lang === 'en' ? keys.map((item) => item.keyRu) : keys.map((item) => item.keyEn);
+    this.keyLayout = this.lang === 'en' ? keysRu : keysEn;
   }
 
   _updateInput() {
@@ -34,15 +34,16 @@ export default class KeyElements {
 
   makeKeys() {
     const fragment = document.createDocumentFragment();
-    this.keyLayout = this.lang === 'en' ? keys.map((item) => item.keyEn) : keys.map((item) => item.keyRu);
+    this.keyLayout = this.lang === 'en' ? keysEn : keysRu;
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
-      const insertLineBreak = ['backspace', 'del', 'enter', 'shiftRight', 'ctrlRight'].indexOf(key) !== -1;
+      const insertLineBreak = ['backspace', 'del', 'enter', 'shiftRight', 'ctrlRight'].indexOf(key.item) !== -1;
 
       keyElement.setAttribute('type', 'button');
+      keyElement.setAttribute('data-code', `${key.code}`);
       keyElement.classList.add('keyboard__key');
 
-      switch (key) {
+      switch (key.key) {
         case 'enter':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.textContent = 'Enter';
@@ -245,21 +246,21 @@ export default class KeyElements {
           break;
 
         default:
-          keyElement.textContent = this.capsLock ? key.toUpperCase() : key.toLowerCase();
+          keyElement.textContent = this.capsLock ? key.key.toUpperCase() : key.key.toLowerCase();
           keyElement.addEventListener('click', () => {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
-              this.value += this.capsLock ? key.toUpperCase() : key.toLowerCase();
+              this.value += this.capsLock ? key.key.toUpperCase() : key.key.toLowerCase();
               this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
               if (this.capsLock) {
                 this.value = this.value.substring(0, cursorPos)
-                  + key.toUpperCase() + this.value.substring(cursorPos);
+                  + key.key.toUpperCase() + this.value.substring(cursorPos);
               } else {
                 this.value = this.value.substring(0, cursorPos)
-                  + key.toLowerCase() + this.value.substring(cursorPos);
+                  + key.key.toLowerCase() + this.value.substring(cursorPos);
               }
               this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
