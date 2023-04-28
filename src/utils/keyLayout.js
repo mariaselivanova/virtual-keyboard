@@ -53,7 +53,7 @@ export const keysEn = [
   { code: 'Period', key: '.' },
   { code: 'Slash', key: '/' },
   { code: 'ArrowUp', key: 'up' },
-  { code: 'ShiftLeft', key: 'shiftRight' },
+  { code: 'ShiftRight', key: 'shiftRight' },
   { code: 'ControlLeft', key: 'ctrlLeft' },
   { code: 'MetaLeft', key: 'win' },
   { code: 'AltLeft', key: 'altLeft' },
@@ -119,7 +119,7 @@ export const keysRu = [
   { code: 'Period', key: 'ю' },
   { code: 'Slash', key: '.' },
   { code: 'ArrowUp', key: 'up' },
-  { code: 'ShiftLeft', key: 'shiftRight' },
+  { code: 'ShiftRight', key: 'shiftRight' },
   { code: 'ControlLeft', key: 'ctrlLeft' },
   { code: 'MetaLeft', key: 'win' },
   { code: 'AltLeft', key: 'altLeft' },
@@ -130,3 +130,52 @@ export const keysRu = [
   { code: 'ArrowRight', key: 'right' },
   { code: 'ControlRight', key: 'ctrlRight' },
 ];
+
+export const shiftedKeys = {
+  en: {
+    '`': '~',
+    '1': '!',
+    '2': '@',
+    '3': '#',
+    '4': '$',
+    '5': '%',
+    '6': '^',
+    '7': '&',
+    '8': '*',
+    '9': '(',
+    '0': ')',
+    '-': '_',
+    '=': '+',
+    '[': '{',
+    ']': '}',
+    ';': ':',
+    "'": '"',
+    ',': '<',
+    '.': '>',
+    '/': '?',
+  },
+  ru: {
+    '1': '!',
+    '2': '"',
+    '3': '№',
+    '4': ';',
+    '5': '%',
+    '6': ':',
+    '7': '?',
+    '8': '*',
+    '9': '(',
+    '0': ')',
+    '-': '_',
+    '=': '+',
+    '.': ',',
+  },
+};
+
+export const shiftedKeysReversed = {
+  en: Object.fromEntries(
+    Object.entries(shiftedKeys.en).map(([key, value]) => [value, key])
+  ),
+  ru: Object.fromEntries(
+    Object.entries(shiftedKeys.ru).map(([key, value]) => [value, key])
+  ),
+};

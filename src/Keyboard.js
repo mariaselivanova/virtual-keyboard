@@ -22,6 +22,9 @@ export default class Keyboard {
       });
 
       if (virtualKey) {
+        if (virtualKey.textContent === 'Alt') {
+          event.preventDefault();
+        }
         virtualKey.classList.add('keyboard__key_act');
       }
     });

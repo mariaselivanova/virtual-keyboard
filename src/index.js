@@ -17,6 +17,9 @@ document.body.append(text);
 const keyboardInput = document.createElement('textarea');
 keyboardInput.classList.add('keyboard-input');
 document.body.append(keyboardInput);
+keyboardInput.addEventListener('keypress', (event) => {
+  event.preventDefault();
+});
 
 const keyElements = new KeyElements(keyboardInput);
 const keyboard = new Keyboard(keyElements.makeKeys(), keyboardInput);
@@ -24,11 +27,53 @@ window.addEventListener('DOMContentLoaded', () => {
   keyboard.init();
 });
 
-// смена языка
+// смена языка и не только
 document.addEventListener('keydown', (evt) => {
-  if (evt.altKey && evt.ctrlKey) {
-    keyElements.toggleLanguage();
-    keyboard.updateLanguage(keyElements.makeKeys());
+  evt.preventDefault();
+  const { ctrlKey, altKey, code } = evt;
+  console.log(code);
+  if (ctrlKey && altKey) {
+    setTimeout(() => {
+      keyElements.toggleLanguage();
+      keyboard.updateLanguage(keyElements.makeKeys());
+    }, 200);
+  }
+  switch (code) {
+    case 'Enter':
+      keyElements.handleEnter(code);
+      break;
+    case 'Tab':
+      keyElements.handleTab(code);
+      break;
+    case 'Delete':
+      keyElements.handleDel(code);
+      break;
+    case 'Space':
+      keyElements.handleSpace(code);
+      break;
+    case 'Backspace':
+      keyElements.handleBackspace(code);
+      break;
+    case 'CapsLock':
+      keyElements.handleCapsLock(code);
+      break;
+    case 'ShiftLeft':
+    case 'ShiftRight':
+      keyElements.handleShift(code);
+      break;
+    default:
+      keyElements.addDefaultKeys(code);
+      break;
   }
 });
 
+document.addEventListener('keyup', (evt) => {
+  evt.preventDefault();
+  const { code } = evt;
+  if (code === 'ShiftLeft' || code === 'ShiftRight') {
+    keyElements.releaseShift(code);
+  }
+  if (code === 'CapsLock') {
+    keyElements.releaseCapslock(code);
+  }
+});
