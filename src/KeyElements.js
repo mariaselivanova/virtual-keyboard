@@ -162,9 +162,9 @@ export default class KeyElements {
         const keys = document.querySelectorAll('.keyboard__key');
         keys.forEach((key) => {
           const keyContent = key.textContent;
-          if (this.lang === 'en' && shiftedKeys.en.hasOwnProperty(keyContent)) {
+          if (this.lang === 'en' && Object.prototype.hasOwnProperty.call(shiftedKeys.en, keyContent)) {
             key.textContent = shiftedKeys.en[keyContent];
-          } else if (this.lang === 'ru' && shiftedKeys.ru.hasOwnProperty(keyContent)) {
+          } else if (this.lang === 'ru' && Object.prototype.hasOwnProperty.call(shiftedKeys.ru, keyContent)) {
             key.textContent = shiftedKeys.ru[keyContent];
           }
         });
@@ -355,79 +355,6 @@ export default class KeyElements {
 
         case 'win':
           keyElement.textContent = 'Win';
-          break;
-
-        case 'up':
-          keyElement.textContent = '▲';
-          keyElement.addEventListener('click', () => {
-            const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === this.value.length) {
-              this.value += '▲';
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            } else {
-              this.value = `${this.value.substring(0, cursorPos)
-              }▲${this.value.substring(cursorPos)}`;
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            }
-          });
-          break;
-        case 'down':
-          keyElement.textContent = '▼';
-          keyElement.addEventListener('click', () => {
-            const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === this.value.length) {
-              this.value += '▼';
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            } else {
-              this.value = `${this.value.substring(0, cursorPos)
-              }▼${this.value.substring(cursorPos)}`;
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            }
-          });
-          break;
-        case 'left':
-          keyElement.textContent = '◄';
-          keyElement.addEventListener('click', () => {
-            const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === this.value.length) {
-              this.value += '◄';
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            } else {
-              this.value = `${this.value.substring(0, cursorPos)
-              }◄${this.value.substring(cursorPos)}`;
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            }
-          });
-          break;
-        case 'right':
-          keyElement.textContent = '►';
-          keyElement.addEventListener('click', () => {
-            const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === this.value.length) {
-              this.value += '►';
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            } else {
-              this.value = `${this.value.substring(0, cursorPos)
-              }►${this.value.substring(cursorPos)}`;
-              this._updateInput();
-              this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
-              this.keyboardInput.focus();
-            }
-          });
           break;
 
         default:

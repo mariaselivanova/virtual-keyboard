@@ -61,6 +61,14 @@ document.addEventListener('keydown', (evt) => {
     case 'ShiftRight':
       keyElements.handleShift(code);
       break;
+    case 'ControlLeft':
+    case 'ControlRight':
+      break;
+    case 'AltLeft':
+    case 'AltRight':
+      break;
+    case 'MetaLeft':
+      break;
     default:
       keyElements.addDefaultKeys(code);
       break;
