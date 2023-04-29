@@ -30,8 +30,11 @@ window.addEventListener('DOMContentLoaded', () => {
 // Обработчик keydown
 document.addEventListener('keydown', (evt) => {
   evt.preventDefault();
-  const { ctrlKey, altKey, code } = evt;
+  const {
+    ctrlKey, altKey, code, repeat,
+  } = evt;
   if (ctrlKey && altKey) {
+    if (repeat) return;
     setTimeout(() => {
       keyElements.toggleLanguage();
       keyboard.updateLanguage(keyElements.makeKeys());

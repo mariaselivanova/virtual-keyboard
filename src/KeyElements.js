@@ -1,5 +1,3 @@
-// TODO: исправить backspace, del,  настроить взаимодействие shift и caps, сделать так, чтобы при нажатии на shift, нельзя было нажать на шифт
-
 import {
   keysEn, keysRu, shiftedKeys, shiftedKeysReversed,
 } from './utils/keyLayout';
@@ -42,18 +40,13 @@ export default class KeyElements {
     if (this.virtualKey) {
       const cursorPos = this.keyboardInput.selectionStart;
       if (cursorPos === this.value.length) {
-        this.value += this.capsLock ? this.virtualKey.textContent.toUpperCase() : this.virtualKey.textContent.toLowerCase();
+        this.value += this.virtualKey.textContent;
         this._updateInput();
         this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
         this.keyboardInput.focus();
       } else {
-        if (this.capsLock) {
-          this.value = this.value.substring(0, cursorPos)
-            + this.virtualKey.textContent.toUpperCase() + this.value.substring(cursorPos);
-        } else {
-          this.value = this.value.substring(0, cursorPos)
-            + this.virtualKey.textContent.toLowerCase() + this.value.substring(cursorPos);
-        }
+        this.value = this.value.substring(0, cursorPos)
+          + this.virtualKey.textContent + this.value.substring(cursorPos);
         this._updateInput();
         this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
         this.keyboardInput.focus();
@@ -100,12 +93,19 @@ export default class KeyElements {
   handleDel(code) {
     this.findAmongKeys(code);
     if (this.virtualKey) {
-      const cursorPos = this.keyboardInput.selectionStart;
-      if (cursorPos === this.value.length) return;
-      this.value = this.value.slice(0, cursorPos) + this.value.slice(cursorPos + 1);
-      this._updateInput();
-      this.keyboardInput.focus();
-      this.keyboardInput.setSelectionRange(cursorPos, cursorPos);
+      const start = this.keyboardInput.selectionStart;
+      const end = this.keyboardInput.selectionEnd;
+      if (start !== end) {
+        this.value = this.value.slice(0, start) + this.value.slice(end);
+        this._updateInput();
+        this.keyboardInput.focus();
+        this.keyboardInput.setSelectionRange(start, start);
+      } else if (start !== this.value.length) {
+        this.value = this.value.slice(0, start) + this.value.slice(start + 1);
+        this._updateInput();
+        this.keyboardInput.focus();
+        this.keyboardInput.setSelectionRange(start, start);
+      }
     }
   }
 
@@ -130,19 +130,20 @@ export default class KeyElements {
   handleBackspace(code) {
     this.findAmongKeys(code);
     if (this.virtualKey) {
-      const cursorPos = this.keyboardInput.selectionStart;
-      if (cursorPos === 0) return;
-      if (cursorPos === this.value.length) {
-        this.value = this.value.slice(0, this.value.length - 1);
+      const cursorStart = this.keyboardInput.selectionStart;
+      const cursorEnd = this.keyboardInput.selectionEnd;
+      if (cursorStart === 0 && cursorEnd === 0) return;
+
+      if (cursorStart !== cursorEnd) {
+        this.value = this.value.substring(0, cursorStart) + this.value.substring(cursorEnd);
         this._updateInput();
-        this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
-        this.keyboardInput.focus();
+        this.keyboardInput.setSelectionRange(cursorStart, cursorStart);
       } else {
-        this.value = this.value.substring(0, cursorPos - 1) + this.value.substring(cursorPos);
+        this.value = this.value.slice(0, cursorStart - 1) + this.value.slice(cursorStart);
         this._updateInput();
-        this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
-        this.keyboardInput.focus();
+        this.keyboardInput.setSelectionRange(cursorStart - 1, cursorStart - 1);
       }
+      this.keyboardInput.focus();
     }
   }
 
@@ -162,26 +163,20 @@ export default class KeyElements {
         this.isShiftPressed = true;
         const keys = document.querySelectorAll('.keyboard__key');
         keys.forEach((key) => {
+          if (this.capsLock) {
+            key.textContent = key.textContent.toLowerCase()
+          } else {
+            if (key.textContent.length === 1) {
+              key.textContent = key.textContent.toUpperCase()
+            }
+          }
           const keyContent = key.textContent;
           if (this.lang === 'en' && Object.prototype.hasOwnProperty.call(shiftedKeys.en, keyContent)) {
-            key.textContent = shiftedKeys.en[keyContent];
+            key.textContent = shiftedKeys.en[keyContent]
           } else if (this.lang === 'ru' && Object.prototype.hasOwnProperty.call(shiftedKeys.ru, keyContent)) {
-            key.textContent = shiftedKeys.ru[keyContent];
+            key.textContent = shiftedKeys.ru[keyContent]
           }
         });
-        if (this.capsLock) {
-          keys.forEach((item) => {
-            if (item.textContent.length === 1) {
-              item.textContent = item.textContent.toLowerCase();
-            }
-          });
-        } else {
-          keys.forEach((item) => {
-            if (item.textContent.length === 1) {
-              item.textContent = item.textContent.toUpperCase();
-            }
-          });
-        }
       }
     }
   }
@@ -372,12 +367,17 @@ export default class KeyElements {
           keyElement.textContent = 'Del';
           keyElement.classList.add('keyboard__key_medium');
           keyElement.addEventListener('click', () => {
-            const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === this.value.length) return;
-            this.value = this.value.slice(0, cursorPos) + this.value.slice(cursorPos + 1);
+            const cursorStart = this.keyboardInput.selectionStart;
+            const cursorEnd = this.keyboardInput.selectionEnd;
+            if (cursorStart === this.value.length) return;
+            if (cursorStart === cursorEnd) {
+              this.value = this.value.slice(0, cursorStart) + this.value.slice(cursorStart + 1);
+            } else {
+              this.value = this.value.substring(0, cursorStart) + this.value.substring(cursorEnd);
+            }
             this._updateInput();
             this.keyboardInput.focus();
-            this.keyboardInput.setSelectionRange(cursorPos, cursorPos);
+            this.keyboardInput.setSelectionRange(cursorStart, cursorStart);
           });
           break;
 
@@ -404,8 +404,14 @@ export default class KeyElements {
           keyElement.textContent = 'Backspace';
           keyElement.addEventListener('click', () => {
             const cursorPos = this.keyboardInput.selectionStart;
-            if (cursorPos === 0) return;
-            if (cursorPos === this.value.length) {
+            const selectionEnd = this.keyboardInput.selectionEnd;
+            if (cursorPos === 0 && selectionEnd === 0) return;
+            if (selectionEnd > cursorPos) {
+              this.value = this.value.substring(0, cursorPos) + this.value.substring(selectionEnd);
+              this._updateInput();
+              this.keyboardInput.setSelectionRange(cursorPos, cursorPos);
+              this.keyboardInput.focus();
+            } else if (cursorPos === this.value.length) {
               this.value = this.value.slice(0, this.value.length - 1);
               this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos - 1, cursorPos - 1);
@@ -418,6 +424,7 @@ export default class KeyElements {
             }
           });
           break;
+
 
         case 'caps':
           keyElement.classList.add('keyboard__key_wide', 'keyboard__key--activatable');
@@ -465,23 +472,13 @@ export default class KeyElements {
           keyElement.addEventListener('click', () => {
             const cursorPos = this.keyboardInput.selectionStart;
             if (cursorPos === this.value.length) {
-              if (this.capsLock) {
-                this.value += keyElement.textContent.toUpperCase();
-              } else {
-                this.value += keyElement.textContent.toLowerCase();
-              }
-
+              this.value += keyElement.textContent;
               this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
             } else {
-              if (this.capsLock) {
-                this.value = this.value.substring(0, cursorPos)
-                  + keyElement.textContent.toUpperCase() + this.value.substring(cursorPos);
-              } else {
-                this.value = this.value.substring(0, cursorPos)
-                  + keyElement.textContent.toUpperCase() + this.value.substring(cursorPos);
-              }
+              this.value = this.value.substring(0, cursorPos)
+                + keyElement.textContent + this.value.substring(cursorPos);
               this._updateInput();
               this.keyboardInput.setSelectionRange(cursorPos + 1, cursorPos + 1);
               this.keyboardInput.focus();
