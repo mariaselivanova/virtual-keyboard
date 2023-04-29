@@ -1,6 +1,6 @@
-/* eslint-disable no-undef */
 import Keyboard from './Keyboard';
 import KeyElements from './KeyElements';
+import './styles/index.css';
 
 // заголовок
 const header = document.createElement('h1');
@@ -27,17 +27,17 @@ window.addEventListener('DOMContentLoaded', () => {
   keyboard.init();
 });
 
-// смена языка и не только
+// Обработчик keydown
 document.addEventListener('keydown', (evt) => {
   evt.preventDefault();
   const { ctrlKey, altKey, code } = evt;
-  console.log(code);
   if (ctrlKey && altKey) {
     setTimeout(() => {
       keyElements.toggleLanguage();
       keyboard.updateLanguage(keyElements.makeKeys());
     }, 200);
   }
+
   switch (code) {
     case 'Enter':
       keyElements.handleEnter(code);
@@ -55,7 +55,7 @@ document.addEventListener('keydown', (evt) => {
       keyElements.handleBackspace(code);
       break;
     case 'CapsLock':
-      keyElements.handleCapsLock(code);
+      keyElements.handleCapsLock(code, evt.repeat);
       break;
     case 'ShiftLeft':
     case 'ShiftRight':
@@ -63,11 +63,14 @@ document.addEventListener('keydown', (evt) => {
       break;
     case 'ControlLeft':
     case 'ControlRight':
+      keyElements.findAmongKeys(code);
       break;
     case 'AltLeft':
     case 'AltRight':
+      keyElements.findAmongKeys(code);
       break;
     case 'MetaLeft':
+      keyElements.findAmongKeys(code);
       break;
     default:
       keyElements.addDefaultKeys(code);
@@ -75,13 +78,12 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
+// Обработчик keyup
 document.addEventListener('keyup', (evt) => {
   evt.preventDefault();
   const { code } = evt;
   if (code === 'ShiftLeft' || code === 'ShiftRight') {
     keyElements.releaseShift(code);
   }
-  if (code === 'CapsLock') {
-    keyElements.releaseCapslock(code);
-  }
+  keyElements.releaseKey(code);
 });

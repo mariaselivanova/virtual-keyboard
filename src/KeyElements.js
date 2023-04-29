@@ -1,3 +1,5 @@
+// TODO: исправить backspace, del,  настроить взаимодействие shift и caps, сделать так, чтобы при нажатии на shift, нельзя было нажать на шифт
+
 import {
   keysEn, keysRu, shiftedKeys, shiftedKeysReversed,
 } from './utils/keyLayout';
@@ -5,13 +7,13 @@ import {
 export default class KeyElements {
   constructor(keyboardInput) {
     this.keyLayout = [];
-    this.lang = 'en';
+    this.lang = '';
     this.keyboardInput = keyboardInput;
     this.value = '';
     this.capsLock = false;
     this.virtualKey = null;
-    this.isCapsPressed = false;
     this.isShiftPressed = false;
+    this.isVirtualShiftPressed = false;
   }
 
   findAmongKeys(code) {
@@ -20,6 +22,18 @@ export default class KeyElements {
       const atribute = k.getAttribute('data-code');
       return code === atribute;
     });
+    if (!this.virtualKey) return;
+    this.virtualKey.classList.add('keyboard__key_act');
+  }
+
+  releaseKey(code) {
+    const keyArr = document.querySelectorAll('.keyboard__key');
+    this.virtualKey = Array.from(keyArr).find((k) => {
+      const atribute = k.getAttribute('data-code');
+      return code === atribute;
+    });
+    if (!this.virtualKey) return;
+    this.virtualKey.classList.remove('keyboard__key_act');
   }
 
   addDefaultKeys(code) {
@@ -132,32 +146,19 @@ export default class KeyElements {
     }
   }
 
-  handleCapsLock(code) {
+  handleCapsLock(code, repeat) {
+    if (repeat) return;
     this.findAmongKeys(code);
     if (this.virtualKey) {
-      if (!this.isCapsPressed) {
-        if (this.capsLock) {
-          this.virtualKey.classList.add('keyboard__key--active');
-        }
-        this._toggleCapsLock();
-        this.virtualKey.classList.toggle('keyboard__key--active');
-        this.isCapsPressed = true;
-      }
-    }
-  }
-
-  releaseCapslock(code) {
-    this.findAmongKeys(code);
-    if (this.virtualKey) {
-      this.isCapsPressed = false;
+      this._toggleCapsLock();
+      this.virtualKey.classList.toggle('keyboard__key--active');
     }
   }
 
   handleShift(code) {
-    this.findAmongKeys(code);
-    if (this.virtualKey) {
-      if (!this.isShiftPressed) {
-        this._toggleCapsLock();
+    if (!this.isShiftPressed) {
+      this.findAmongKeys(code);
+      if (this.virtualKey) {
         this.isShiftPressed = true;
         const keys = document.querySelectorAll('.keyboard__key');
         keys.forEach((key) => {
@@ -168,14 +169,84 @@ export default class KeyElements {
             key.textContent = shiftedKeys.ru[keyContent];
           }
         });
+        if (this.capsLock) {
+          keys.forEach((item) => {
+            if (item.textContent.length === 1) {
+              item.textContent = item.textContent.toLowerCase();
+            }
+          });
+        } else {
+          keys.forEach((item) => {
+            if (item.textContent.length === 1) {
+              item.textContent = item.textContent.toUpperCase();
+            }
+          });
+        }
       }
     }
   }
 
   releaseShift(code) {
-    this.findAmongKeys(code);
-    if (this.virtualKey) {
-      this._toggleCapsLock();
+    if (this.isShiftPressed && !this.isVirtualShiftPressed) {
+      this.findAmongKeys(code);
+      if (this.virtualKey) {
+        this.isShiftPressed = false;
+        const keys = document.querySelectorAll('.keyboard__key');
+        keys.forEach((key) => {
+          const keyContent = key.textContent;
+          if (this.lang === 'en' && shiftedKeysReversed.en.hasOwnProperty(keyContent)) {
+            key.textContent = shiftedKeysReversed.en[keyContent];
+          } else if (this.lang === 'ru' && shiftedKeysReversed.ru.hasOwnProperty(keyContent)) {
+            key.textContent = shiftedKeysReversed.ru[keyContent];
+          }
+        });
+        if (this.capsLock) {
+          keys.forEach((item) => {
+            if (item.textContent.length === 1) {
+              item.textContent = item.textContent.toUpperCase();
+            }
+          });
+        } else {
+          keys.forEach((item) => {
+            if (item.textContent.length === 1) {
+              item.textContent = item.textContent.toLowerCase();
+            }
+          });
+        }
+      }
+    }
+  }
+
+  _pressShiftDown() {
+    if (!this.isShiftPressed) {
+      this.isShiftPressed = true;
+      const keys = document.querySelectorAll('.keyboard__key');
+      keys.forEach((key) => {
+        const keyContent = key.textContent;
+        if (this.lang === 'en' && Object.prototype.hasOwnProperty.call(shiftedKeys.en, keyContent)) {
+          key.textContent = shiftedKeys.en[keyContent];
+        } else if (this.lang === 'ru' && Object.prototype.hasOwnProperty.call(shiftedKeys.ru, keyContent)) {
+          key.textContent = shiftedKeys.ru[keyContent];
+        }
+      });
+      if (this.capsLock) {
+        keys.forEach((item) => {
+          if (item.textContent.length === 1) {
+            item.textContent = item.textContent.toLowerCase();
+          }
+        });
+      } else {
+        keys.forEach((item) => {
+          if (item.textContent.length === 1) {
+            item.textContent = item.textContent.toUpperCase();
+          }
+        });
+      }
+    }
+  }
+
+  _pressShiftUp() {
+    if (this.isShiftPressed) {
       this.isShiftPressed = false;
       const keys = document.querySelectorAll('.keyboard__key');
       keys.forEach((key) => {
@@ -186,6 +257,19 @@ export default class KeyElements {
           key.textContent = shiftedKeysReversed.ru[keyContent];
         }
       });
+      if (this.capsLock) {
+        keys.forEach((item) => {
+          if (item.textContent.length === 1) {
+            item.textContent = item.textContent.toUpperCase();
+          }
+        });
+      } else {
+        keys.forEach((item) => {
+          if (item.textContent.length === 1) {
+            item.textContent = item.textContent.toLowerCase();
+          }
+        });
+      }
     }
   }
 
@@ -195,6 +279,12 @@ export default class KeyElements {
     keyArr.forEach((item) => {
       if (item.textContent.length === 1) {
         if (this.capsLock) {
+          if (this.isShiftPressed) {
+            item.textContent = item.textContent.toLowerCase();
+          } else {
+            item.textContent = item.textContent.toUpperCase();
+          }
+        } else if (this.isShiftPressed) {
           item.textContent = item.textContent.toUpperCase();
         } else {
           item.textContent = item.textContent.toLowerCase();
@@ -204,8 +294,15 @@ export default class KeyElements {
   }
 
   toggleLanguage() {
-    this.lang = this.lang === 'en' ? 'ru' : 'en';
-    this.keyLayout = this.lang === 'en' ? keysRu : keysEn;
+    const storedLang = localStorage.getItem('lang');
+    if (storedLang === 'en') {
+      this.lang = 'ru';
+      localStorage.setItem('lang', 'ru');
+    } else if (storedLang === 'ru') {
+      this.lang = 'en';
+      localStorage.setItem('lang', 'en');
+    }
+    this.keyLayout = this.lang === 'en' ? keysEn : keysRu;
   }
 
   _updateInput() {
@@ -215,10 +312,14 @@ export default class KeyElements {
 
   makeKeys() {
     const fragment = document.createDocumentFragment();
-    if (this.lang === 'en') {
+    if (!localStorage.getItem('lang') || localStorage.getItem('lang') === 'en') {
       this.keyLayout = keysEn;
+      localStorage.setItem('lang', 'en');
+      this.lang = 'en';
     } else {
+      this.lang = 'ru';
       this.keyLayout = keysRu;
+      localStorage.setItem('lang', 'ru');
     }
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
@@ -325,7 +426,7 @@ export default class KeyElements {
             keyElement.classList.add('keyboard__key--active');
           }
 
-          keyElement.addEventListener('click', () => {
+          keyElement.addEventListener('mousedown', () => {
             this._toggleCapsLock();
             keyElement.classList.toggle('keyboard__key--active');
           });
@@ -336,10 +437,12 @@ export default class KeyElements {
           keyElement.classList.add('keyboard__key_wide');
           keyElement.textContent = 'Shift';
           keyElement.addEventListener('mousedown', () => {
-            this._toggleCapsLock();
+            this._pressShiftDown();
+            this.isVirtualShiftPressed = true;
           });
           keyElement.addEventListener('mouseup', () => {
-            this._toggleCapsLock();
+            this._pressShiftUp();
+            this.isVirtualShiftPressed = false;
           });
           break;
 

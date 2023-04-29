@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const keysEn = [
   { code: 'Backquote', key: '`' },
   { code: 'Digit1', key: '1' },
@@ -134,16 +133,16 @@ export const keysRu = [
 export const shiftedKeys = {
   en: {
     '`': '~',
-    '1': '!',
-    '2': '@',
-    '3': '#',
-    '4': '$',
-    '5': '%',
-    '6': '^',
-    '7': '&',
-    '8': '*',
-    '9': '(',
-    '0': ')',
+    1: '!',
+    2: '@',
+    3: '#',
+    4: '$',
+    5: '%',
+    6: '^',
+    7: '&',
+    8: '*',
+    9: '(',
+    0: ')',
     '-': '_',
     '=': '+',
     '[': '{',
@@ -155,16 +154,16 @@ export const shiftedKeys = {
     '/': '?',
   },
   ru: {
-    '1': '!',
-    '2': '"',
-    '3': '№',
-    '4': ';',
-    '5': '%',
-    '6': ':',
-    '7': '?',
-    '8': '*',
-    '9': '(',
-    '0': ')',
+    1: '!',
+    2: '"',
+    3: '№',
+    4: ';',
+    5: '%',
+    6: ':',
+    7: '?',
+    8: '*',
+    9: '(',
+    0: ')',
     '-': '_',
     '=': '+',
     '.': ',',
@@ -173,9 +172,9 @@ export const shiftedKeys = {
 
 export const shiftedKeysReversed = {
   en: Object.fromEntries(
-    Object.entries(shiftedKeys.en).map(([key, value]) => [value, key])
+    Object.entries(shiftedKeys.en).map(([key, value]) => [value, key]),
   ),
   ru: Object.fromEntries(
-    Object.entries(shiftedKeys.ru).map(([key, value]) => [value, key])
+    Object.entries(shiftedKeys.ru).map(([key, value]) => [value, key]),
   ),
 };
