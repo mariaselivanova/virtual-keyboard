@@ -79,17 +79,11 @@ export default class KeyElements {
   }
 
   handleRightShiftKey(code) {
-    this.pressKey(code);
-    if (this.virtualKey) {
-      this.input.handleRightShiftKeyDown();
-    }
+    this.input.handleRightShiftKeyDown(code);
   }
 
   handleLeftShiftKey(code) {
-    this.pressKey(code);
-    if (this.virtualKey) {
-      this.input.handleLeftShiftKeyDown();
-    }
+    this.input.handleLeftShiftKeyDown(code);
   }
 
   releaseShiftKey(code) {
@@ -117,7 +111,6 @@ export default class KeyElements {
     }
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
-
       keyElement.setAttribute('type', 'button');
       keyElement.setAttribute('data-code', `${key.code}`);
       keyElement.classList.add('keyboard__key');
@@ -183,11 +176,7 @@ export default class KeyElements {
             this.input.handleShiftMouseDown();
           });
           keyElement.addEventListener('mouseup', () => {
-            if (key.key === 'shiftRight') {
-              this.input.handleShiftMouseUpRight();
-            } else {
-              this.input.handleShiftMouseUpLeft();
-            }
+            this.input.handleShiftMouseUp(key.key);
             keyElement.classList.remove('keyboard__key_act');
           });
           break;
@@ -216,7 +205,6 @@ export default class KeyElements {
 
       fragment.appendChild(keyElement);
     });
-
     return fragment;
   }
 }

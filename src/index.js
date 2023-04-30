@@ -41,6 +41,10 @@ document.addEventListener('keydown', (evt) => {
       keyElements.toggleLanguage();
       const newLangKeys = keyElements.makeKeys();
       keyboard.updateLanguage(newLangKeys);
+      if (input.checkIfShift()) {
+        input.handleShiftDown();
+        input.checkWhichShift();
+      }
     }, 200);
   }
 

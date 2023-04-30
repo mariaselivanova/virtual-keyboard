@@ -58,15 +58,19 @@ h1 {
 }
 
 .keyboard__key:hover {
-  background: rgb(222, 160, 244);
+  background: rgba(222, 160, 244, 0.4);
 }
 
 .keyboard__key:active {
-  background: rgb(222, 160, 244);
+  background: rgba(222, 160, 244, 0.9);
 }
 
 .keyboard__key_act {
-  background: rgb(222, 160, 244);
+  background: rgba(222, 160, 244, 0.9);
+}
+
+.keyboard__key_act.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
 }
 
 .keyboard__key_medium {
