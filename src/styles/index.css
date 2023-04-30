@@ -61,6 +61,10 @@ h1 {
   background: rgba(222, 160, 244, 0.4);
 }
 
+.keyboard__key:active {
+  background: rgba(222, 160, 244, 0.9);
+}
+
 .keyboard__key_act {
   background: rgba(222, 160, 244, 0.9);
 }
