@@ -1,6 +1,6 @@
 import Keyboard from './Keyboard';
-import KeyElements from './KeyElements';
 import Input from './Input';
+import KeyElements from './KeyElements';
 import './styles/index.css';
 
 // заголовок
@@ -11,7 +11,7 @@ document.body.append(header);
 // подпись
 const text = document.createElement('p');
 text.classList.add('text');
-text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: левые ctrl + alt';
+text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка: левые ctrl + alt';
 document.body.append(text);
 
 // инпут
@@ -39,7 +39,8 @@ document.addEventListener('keydown', (evt) => {
     if (repeat) return;
     setTimeout(() => {
       keyElements.toggleLanguage();
-      keyboard.updateLanguage(keyElements.makeKeys());
+      const newLangKeys = keyElements.makeKeys();
+      keyboard.updateLanguage(newLangKeys);
     }, 200);
   }
 
@@ -70,14 +71,14 @@ document.addEventListener('keydown', (evt) => {
       break;
     case 'ControlLeft':
     case 'ControlRight':
-      keyElements.findAmongKeys(code);
+      keyElements.pressKey(code);
       break;
     case 'AltLeft':
     case 'AltRight':
-      keyElements.findAmongKeys(code);
+      keyElements.pressKey(code);
       break;
     case 'MetaLeft':
-      keyElements.findAmongKeys(code);
+      keyElements.pressKey(code);
       break;
     default:
       keyElements.addDefaultKeys(code);
@@ -89,7 +90,6 @@ document.addEventListener('keydown', (evt) => {
 document.addEventListener('keyup', (evt) => {
   evt.preventDefault();
   const { code } = evt;
-
   if (code === 'ShiftLeft' || code === 'ShiftRight') {
     keyElements.releaseShiftKey(code);
   }

@@ -190,7 +190,7 @@ export default class Input {
   }
 
   handleShiftMouseUpLeft() {
-    if (this.isVirtualShiftPressed && !this.isRightShiftPressed) {
+    if (!this.isRightShiftPressed) {
       this.isLeftShiftPressed = false;
       this.isVirtualShiftPressed = false;
       this.handleShiftUp();
@@ -198,7 +198,7 @@ export default class Input {
   }
 
   handleShiftMouseUpRight() {
-    if (this.isVirtualShiftPressed && !this.isLeftShiftPressed) {
+    if (!this.isLeftShiftPressed) {
       this.isRightShiftPressed = false;
       this.isVirtualShiftPressed = false;
       this.handleShiftUp();
