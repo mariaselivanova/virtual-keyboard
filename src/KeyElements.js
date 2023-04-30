@@ -5,6 +5,7 @@ export default class KeyElements {
     this.keyLayout = [];
     this.input = input;
     this.virtualKey = null;
+    this.pressedKeys = [];
   }
 
   findAmongKeys(code) {
@@ -109,12 +110,26 @@ export default class KeyElements {
     } else {
       this.keyLayout = keysRu;
     }
+    const pressedKeyCodes = this.pressedKeys.map((key) => key.code);
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
       keyElement.setAttribute('type', 'button');
       keyElement.setAttribute('data-code', `${key.code}`);
       keyElement.classList.add('keyboard__key');
-
+      if (pressedKeyCodes.includes(key.code)) {
+        keyElement.classList.add('keyboard__key_act');
+      }
+      keyElement.addEventListener('mousedown', () => {
+        keyElement.classList.add('keyboard__key_act');
+        this.pressedKeys.push(key);
+      });
+      keyElement.addEventListener('mouseup', () => {
+        keyElement.classList.remove('keyboard__key_act');
+        const index = this.pressedKeys.findIndex((pressedKey) => pressedKey.code === key.code);
+        if (index > -1) {
+          this.pressedKeys.splice(index, 1);
+        }
+      });
       switch (key.key) {
         case 'enter':
           keyElement.classList.add('keyboard__key_wide');

@@ -213,8 +213,8 @@ export default class Input {
 
   handleShiftMouseDown() {
     if (!this.isVirtualShiftPressed && !this.isLeftShiftPressed && !this.isRightShiftPressed) {
-      this.handleShiftDown();
       this.isVirtualShiftPressed = true;
+      this.handleShiftDown();
     }
   }
 
