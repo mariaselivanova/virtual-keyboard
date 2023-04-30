@@ -10,16 +10,4 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "rules": {
-    "no-underscore-dangle": [
-      "error",
-      {
-        "allow": [
-          "_triggerEvent",
-          "_toggleCapsLock",
-          "_updateInput"
-        ]
-      }
-    ]
-  }
 }

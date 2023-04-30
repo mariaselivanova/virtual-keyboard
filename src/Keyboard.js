@@ -2,12 +2,6 @@ export default class Keyboard {
   constructor(keysFragment) {
     this.container = null;
     this.keys = keysFragment;
-    this.isLeftShiftPressed = false;
-    this.isRightShiftPressed = false;
-    this.shiftKeys = {
-      ShiftLeft: false,
-      ShiftRight: false,
-    };
   }
 
   init() {

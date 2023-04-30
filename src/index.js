@@ -1,5 +1,6 @@
 import Keyboard from './Keyboard';
 import KeyElements from './KeyElements';
+import Input from './Input';
 import './styles/index.css';
 
 // заголовок
@@ -10,7 +11,7 @@ document.body.append(header);
 // подпись
 const text = document.createElement('p');
 text.classList.add('text');
-text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: ctrl + alt';
+text.textContent = 'Клавиатура создана в операционной системе Windows. Для переключения языка комбинация: левые ctrl + alt';
 document.body.append(text);
 
 // инпут
@@ -21,8 +22,9 @@ keyboardInput.addEventListener('keypress', (event) => {
   event.preventDefault();
 });
 
-const keyElements = new KeyElements(keyboardInput);
-const keyboard = new Keyboard(keyElements.makeKeys(), keyboardInput);
+const input = new Input(keyboardInput);
+const keyElements = new KeyElements(input);
+const keyboard = new Keyboard(keyElements.makeKeys());
 window.addEventListener('DOMContentLoaded', () => {
   keyboard.init();
 });
@@ -43,26 +45,28 @@ document.addEventListener('keydown', (evt) => {
 
   switch (code) {
     case 'Enter':
-      keyElements.handleEnter(code);
+      keyElements.handleEnterKey(code);
       break;
     case 'Tab':
-      keyElements.handleTab(code);
+      keyElements.handleTabKey(code);
       break;
     case 'Delete':
-      keyElements.handleDel(code);
+      keyElements.handleDelKey(code);
       break;
     case 'Space':
-      keyElements.handleSpace(code);
+      keyElements.handleSpaceKey(code);
       break;
     case 'Backspace':
-      keyElements.handleBackspace(code);
+      keyElements.handleBackspaceKey(code);
       break;
     case 'CapsLock':
-      keyElements.handleCapsLock(code, evt.repeat);
+      keyElements.handleCapsLockKey(code, evt.repeat);
+      break;
+    case 'ShiftRight':
+      keyElements.handleRightShiftKey(code);
       break;
     case 'ShiftLeft':
-    case 'ShiftRight':
-      keyElements.handleShift(code);
+      keyElements.handleLeftShiftKey(code);
       break;
     case 'ControlLeft':
     case 'ControlRight':
@@ -85,8 +89,9 @@ document.addEventListener('keydown', (evt) => {
 document.addEventListener('keyup', (evt) => {
   evt.preventDefault();
   const { code } = evt;
+
   if (code === 'ShiftLeft' || code === 'ShiftRight') {
-    keyElements.releaseShift(code);
+    keyElements.releaseShiftKey(code);
   }
   keyElements.releaseKey(code);
 });

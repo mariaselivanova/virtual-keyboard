@@ -73,6 +73,10 @@ h1 {
   width: 70px;
 }
 
+.keyboard__key_normal {
+  width: 44px;
+}
+
 .keyboard__key_wide {
   width: 95px;
 }
