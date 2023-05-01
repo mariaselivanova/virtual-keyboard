@@ -104,18 +104,20 @@ export default class KeyElements {
 
   makeKeys() {
     const fragment = document.createDocumentFragment();
+    const pressedKeyCodes = this.pressedKeys.map((key) => key.code);
     if (!localStorage.getItem('lang') || localStorage.getItem('lang') === 'en') {
       this.keyLayout = keysEn;
       localStorage.setItem('lang', 'en');
     } else {
       this.keyLayout = keysRu;
     }
-    const pressedKeyCodes = this.pressedKeys.map((key) => key.code);
+
     this.keyLayout.forEach((key) => {
       const keyElement = document.createElement('button');
       keyElement.setAttribute('type', 'button');
       keyElement.setAttribute('data-code', `${key.code}`);
       keyElement.classList.add('keyboard__key');
+
       if (pressedKeyCodes.includes(key.code)) {
         keyElement.classList.add('keyboard__key_act');
       }
@@ -123,7 +125,7 @@ export default class KeyElements {
         keyElement.classList.add('keyboard__key_act');
         this.pressedKeys.push(key);
       });
-      keyElement.addEventListener('mouseup', () => {
+      document.addEventListener('mouseup', () => {
         keyElement.classList.remove('keyboard__key_act');
         const index = this.pressedKeys.findIndex((pressedKey) => pressedKey.code === key.code);
         if (index > -1) {
@@ -190,9 +192,8 @@ export default class KeyElements {
           keyElement.addEventListener('mousedown', () => {
             this.input.handleShiftMouseDown();
           });
-          keyElement.addEventListener('mouseup', () => {
+          document.addEventListener('mouseup', () => {
             this.input.handleShiftMouseUp(key.key);
-            keyElement.classList.remove('keyboard__key_act');
           });
           break;
         case 'ctrlLeft':
