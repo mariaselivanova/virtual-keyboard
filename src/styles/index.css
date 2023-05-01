@@ -101,3 +101,23 @@ h1 {
 .keyboard__key--active::after {
   background: #08ff00;
 }
+
+.keyboard__key_shift_active {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_shift_active.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_active {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_active.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}

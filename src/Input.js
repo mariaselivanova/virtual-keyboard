@@ -7,8 +7,17 @@ export default class Input {
     this.capsLock = false;
     this.isLeftShiftPressed = false;
     this.isRightShiftPressed = false;
-    this.isVirtualShiftPressed = false;
+    this.isVirtualShiftPressedRight = false;
+    this.isVirtualShiftPressedLeft = false;
     this.keys = null;
+  }
+
+  checkIfVirtualShiftRight() {
+    return this.isVirtualShiftPressedRight;
+  }
+
+  checkIfVirtualShiftLeft() {
+    return this.isVirtualShiftPressedLeft;
   }
 
   checkIfCaps() {
@@ -17,7 +26,8 @@ export default class Input {
 
   checkIfShift() {
     return this.isLeftShiftPressed
-      || this.isRightShiftPressed || this.isVirtualShiftPressed;
+      || this.isRightShiftPressed || this.isVirtualShiftPressedLeft
+      || this.isVirtualShiftPressedRight;
   }
 
   checkWhichShift() {
@@ -38,6 +48,10 @@ export default class Input {
       const atribute = key.getAttribute('data-code');
       return code === atribute;
     });
+    if (k.innerHTML === 'Shift') {
+      k.classList.add('keyboard__key_active');
+      return;
+    }
     k.classList.add('keyboard__key_act');
   }
 
@@ -128,7 +142,8 @@ export default class Input {
     const keyArr = document.querySelectorAll('.keyboard__key');
     this.capsLock = !this.capsLock;
     const isShiftPressed = this.isLeftShiftPressed
-      || this.isRightShiftPressed || this.isVirtualShiftPressed;
+      || this.isRightShiftPressed || this.isVirtualShiftPressedLeft
+      || this.isVirtualShiftPressedRight;
     keyArr.forEach((item) => {
       const key = item;
       if (key.textContent.length === 1) {
@@ -145,6 +160,34 @@ export default class Input {
         }
       }
     });
+  }
+
+  toggleShiftLeft(keyElement) {
+    if (!this.isLeftShiftPressed && !this.isRightShiftPressed && !this.isVirtualShiftPressedRight) {
+      if (!this.isVirtualShiftPressedLeft) {
+        this.handleShiftDown();
+        this.isVirtualShiftPressedLeft = true;
+        keyElement.classList.add('keyboard__key_shift_active');
+      } else {
+        this.handleShiftUp();
+        this.isVirtualShiftPressedLeft = false;
+        keyElement.classList.remove('keyboard__key_shift_active');
+      }
+    }
+  }
+
+  toggleShiftRight(keyElement) {
+    if (!this.isLeftShiftPressed && !this.isRightShiftPressed && !this.isVirtualShiftPressedLeft) {
+      if (!this.isVirtualShiftPressedRight) {
+        this.handleShiftDown();
+        this.isVirtualShiftPressedRight = true;
+        keyElement.classList.add('keyboard__key_shift_active');
+      } else {
+        this.handleShiftUp();
+        this.isVirtualShiftPressedRight = false;
+        keyElement.classList.remove('keyboard__key_shift_active');
+      }
+    }
   }
 
   handleShiftDown() {
@@ -184,7 +227,8 @@ export default class Input {
   }
 
   handleRightShiftKeyDown(code) {
-    if (!this.isLeftShiftPressed && !this.isRightShiftPressed && !this.isVirtualShiftPressed) {
+    if (!this.isLeftShiftPressed && !this.isRightShiftPressed && !this.isVirtualShiftPressedLeft
+      && !this.isVirtualShiftPressedRight) {
       this.isRightShiftPressed = true;
       this.handleShiftDown();
       this.findKey(code);
@@ -192,41 +236,20 @@ export default class Input {
   }
 
   handleLeftShiftKeyDown(code) {
-    if (!this.isLeftShiftPressed && !this.isVirtualShiftPressed && !this.isRightShiftPressed) {
+    if (!this.isLeftShiftPressed && !this.isVirtualShiftPressedLeft
+      && !this.isVirtualShiftPressedRight && !this.isRightShiftPressed) {
       this.isLeftShiftPressed = true;
       this.handleShiftDown();
       this.findKey(code);
     }
   }
 
-  handleShiftKeyUp(code) {
-    if ((this.isLeftShiftPressed && code === 'ShiftLeft' && !this.isVirtualShiftPressed)
-      || (this.isRightShiftPressed && code === 'ShiftRight' && !this.isVirtualShiftPressed)) {
-      if (this.isRightShiftPressed) {
-        this.isRightShiftPressed = false;
-      } else if (this.isLeftShiftPressed) {
-        this.isLeftShiftPressed = false;
-      }
-      this.handleShiftUp();
-    }
-  }
-
-  handleShiftMouseDown() {
-    if (!this.isVirtualShiftPressed && !this.isLeftShiftPressed && !this.isRightShiftPressed) {
-      this.isVirtualShiftPressed = true;
-      this.handleShiftDown();
-    }
-  }
-
-  handleShiftMouseUp(key) {
-    if (this.isVirtualShiftPressed && !this.isLeftShiftPressed && !this.isRightShiftPressed) {
-      this.isVirtualShiftPressed = false;
-      this.handleShiftUp();
-    } else if (!this.isVirtualShiftPressed && this.isLeftShiftPressed && key === 'shiftLeft') {
-      this.isLeftShiftPressed = false;
-      this.handleShiftUp();
-    } else if (!this.isVirtualShiftPressed && this.isRightShiftPressed && key === 'shiftRight') {
+  handleShiftKeyUp() {
+    if (this.isRightShiftPressed) {
       this.isRightShiftPressed = false;
+      this.handleShiftUp();
+    } else if (this.isLeftShiftPressed) {
+      this.isLeftShiftPressed = false;
       this.handleShiftUp();
     }
   }

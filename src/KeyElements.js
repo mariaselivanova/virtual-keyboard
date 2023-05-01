@@ -25,6 +25,10 @@ export default class KeyElements {
   releaseKey(code) {
     this.findAmongKeys(code);
     if (!this.virtualKey) return;
+    if (this.virtualKey.innerHTML === 'Shift') {
+      this.virtualKey.classList.remove('keyboard__key_active');
+      return;
+    }
     this.virtualKey.classList.remove('keyboard__key_act');
   }
 
@@ -87,8 +91,8 @@ export default class KeyElements {
     this.input.handleLeftShiftKeyDown(code);
   }
 
-  releaseShiftKey(code) {
-    this.input.handleShiftKeyUp(code);
+  releaseShiftKey() {
+    this.input.handleShiftKeyUp();
   }
 
   toggleLanguage() {
@@ -193,17 +197,23 @@ export default class KeyElements {
           break;
 
         case 'shiftRight':
+          keyElement.classList.add('keyboard__key_wide');
+          keyElement.textContent = 'Shift';
+          if (this.input.checkIfVirtualShiftRight()) {
+            keyElement.classList.add('keyboard__key_shift_active');
+          }
+          keyElement.addEventListener('click', () => {
+            this.input.toggleShiftRight(keyElement);
+          });
+          break;
         case 'shiftLeft':
           keyElement.classList.add('keyboard__key_wide');
           keyElement.textContent = 'Shift';
-          keyElement.addEventListener('mousedown', () => {
-            this.input.handleShiftMouseDown();
-          });
-          keyElement.addEventListener('mouseup', () => {
-            this.input.handleShiftMouseUp(key.key);
-          });
-          keyElement.addEventListener('mouseleave', () => {
-            this.input.handleShiftMouseUp(key.key);
+          if (this.input.checkIfVirtualShiftLeft()) {
+            keyElement.classList.add('keyboard__key_shift_active');
+          }
+          keyElement.addEventListener('click', () => {
+            this.input.toggleShiftLeft(keyElement);
           });
           break;
         case 'ctrlLeft':

@@ -96,7 +96,7 @@ document.addEventListener('keyup', (evt) => {
   evt.preventDefault();
   const { code } = evt;
   if (code === 'ShiftLeft' || code === 'ShiftRight') {
-    keyElements.releaseShiftKey(code);
+    keyElements.releaseShiftKey();
   }
   keyElements.releaseKey(code);
 });
