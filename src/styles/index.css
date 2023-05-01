@@ -1,0 +1,123 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333030;
+}
+
+h1 {
+  margin: 20px;
+  font-size: 1.6rem;
+}
+
+.keyboard-input {
+  width: 750px;
+  height: 250px;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+}
+
+.text {
+  margin-top: 8px;
+  margin-bottom: 5px;
+  font-size: 0.8rem;
+}
+
+.keyboard {
+  padding: 10px;
+  border-radius: 10px;
+  width: 800px;
+  background: linear-gradient(to bottom right, #ff98b6, #ffb367);
+  flex-direction: row;
+  text-align: center;
+  box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+.keyboard__key {
+  position: relative;
+  height: 45px;
+  width: 45px;
+  margin: 3px;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  vertical-align: top;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+
+}
+
+.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.4);
+}
+
+.keyboard__key_act {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_act.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_medium {
+  width: 70px;
+}
+
+.keyboard__key_normal {
+  width: 44px;
+}
+
+.keyboard__key_wide {
+  width: 95px;
+}
+
+.keyboard__key_super-wide {
+  width: 351px;
+}
+
+.keyboard__key--activatable::after {
+  content: '';
+  top: 6px;
+  left: 6px;
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+}
+
+.keyboard__key--active::after {
+  background: #08ff00;
+}
+
+.keyboard__key_shift_active {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_shift_active.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_active {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
+
+.keyboard__key_active.keyboard__key:hover {
+  background: rgba(222, 160, 244, 0.9);
+  transform: translateY(2px);
+}
