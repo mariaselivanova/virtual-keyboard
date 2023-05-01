@@ -191,8 +191,6 @@ export default class Input {
   }
 
   handleShiftDown() {
-    console.log(this.isLeftShiftPressed + "LEFT" + "Down")
-    console.log(this.isRightShiftPressed + "RIGHT" + "Down")
     const keys = document.querySelectorAll('.keyboard__key');
     const lang = localStorage.getItem('lang');
     keys.forEach((item) => {
@@ -211,8 +209,6 @@ export default class Input {
   }
 
   handleShiftUp() {
-    console.log(this.isLeftShiftPressed + "LEFT" + "up")
-    console.log(this.isRightShiftPressed + "RIGHT" + "up")
     const keys = document.querySelectorAll('.keyboard__key');
     const lang = localStorage.getItem('lang');
     keys.forEach((item) => {
