@@ -33,12 +33,12 @@ export default class Input {
   checkWhichShift() {
     if (this.isLeftShiftPressed) {
       const leftShift = document.querySelector('[data-code="ShiftLeft"]');
-      leftShift.classList.add('keyboard__key_act');
+      leftShift.classList.add('keyboard__key_active');
     }
 
     if (this.isRightShiftPressed) {
       const rightShift = document.querySelector('[data-code="ShiftRight"]');
-      rightShift.classList.add('keyboard__key_act');
+      rightShift.classList.add('keyboard__key_active');
     }
   }
 
