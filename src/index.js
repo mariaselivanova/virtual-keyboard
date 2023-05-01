@@ -35,6 +35,7 @@ document.addEventListener('keydown', (evt) => {
   const {
     ctrlKey, altKey, code, repeat,
   } = evt;
+
   if (ctrlKey && altKey) {
     if (repeat) return;
     setTimeout(() => {

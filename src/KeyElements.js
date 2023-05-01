@@ -125,7 +125,14 @@ export default class KeyElements {
         keyElement.classList.add('keyboard__key_act');
         this.pressedKeys.push(key);
       });
-      document.addEventListener('mouseup', () => {
+      keyElement.addEventListener('mouseup', () => {
+        keyElement.classList.remove('keyboard__key_act');
+        const index = this.pressedKeys.findIndex((pressedKey) => pressedKey.code === key.code);
+        if (index > -1) {
+          this.pressedKeys.splice(index, 1);
+        }
+      });
+      keyElement.addEventListener('mouseleave', () => {
         keyElement.classList.remove('keyboard__key_act');
         const index = this.pressedKeys.findIndex((pressedKey) => pressedKey.code === key.code);
         if (index > -1) {
@@ -192,7 +199,10 @@ export default class KeyElements {
           keyElement.addEventListener('mousedown', () => {
             this.input.handleShiftMouseDown();
           });
-          document.addEventListener('mouseup', () => {
+          keyElement.addEventListener('mouseup', () => {
+            this.input.handleShiftMouseUp(key.key);
+          });
+          keyElement.addEventListener('mouseleave', () => {
             this.input.handleShiftMouseUp(key.key);
           });
           break;
