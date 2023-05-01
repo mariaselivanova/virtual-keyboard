@@ -191,6 +191,8 @@ export default class Input {
   }
 
   handleShiftDown() {
+    console.log(this.isLeftShiftPressed + "LEFT" + "Down")
+    console.log(this.isRightShiftPressed + "RIGHT" + "Down")
     const keys = document.querySelectorAll('.keyboard__key');
     const lang = localStorage.getItem('lang');
     keys.forEach((item) => {
@@ -209,6 +211,8 @@ export default class Input {
   }
 
   handleShiftUp() {
+    console.log(this.isLeftShiftPressed + "LEFT" + "up")
+    console.log(this.isRightShiftPressed + "RIGHT" + "up")
     const keys = document.querySelectorAll('.keyboard__key');
     const lang = localStorage.getItem('lang');
     keys.forEach((item) => {
@@ -245,12 +249,16 @@ export default class Input {
   }
 
   handleShiftKeyUp() {
-    if (this.isRightShiftPressed) {
+    if (this.isRightShiftPressed && !this.isLeftShiftPressed) {
       this.isRightShiftPressed = false;
       this.handleShiftUp();
-    } else if (this.isLeftShiftPressed) {
+      const rightShift = document.querySelector('[data-code="ShiftRight"]');
+      rightShift.classList.remove('keyboard__key_active');
+    } else if (this.isLeftShiftPressed && !this.isRightShiftPressed) {
       this.isLeftShiftPressed = false;
       this.handleShiftUp();
+      const leftShift = document.querySelector('[data-code="ShiftLeft"]');
+      leftShift.classList.remove('keyboard__key_active');
     }
   }
 }
